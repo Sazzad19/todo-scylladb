@@ -7,22 +7,21 @@ exports.getTaskList = (req, res)=>{
 exports.createTask = (req, res) =>{
     const task = new Task({
         title: req.body.title,
-        description: req.body.description,
-        completed: req.body.completed,
+        description: req.body.description || "",
+        completed: req.body.completed ||  false,
         created: Date.now(),
-        priority: req.body.priority,
-        user: "Sazzad",
+        priority: req.body.priority || "High",
+        user: req.body.user,
         updated: Date.now(),
        })
        
-       task.save(function(err){
+       task.save(function(err, result){
         if(err) {
             console.log(err);
-            res.send({success: false, message: err.message});
+            res.json({success: false, message: err.message});
         }
-        res.send({success: true, message: "Created Successfully"});
+        res.json({success: true, data: result});
     });
-    res.send("Post Task")
 }
 
 exports.getTask = (req, res)=>{
